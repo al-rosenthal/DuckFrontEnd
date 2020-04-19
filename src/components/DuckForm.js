@@ -8,6 +8,7 @@ import {
 	Input,
 } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
+import moment from 'moment';
 
 import './DuckForm.css';
 
@@ -15,40 +16,45 @@ export default class DuckForm extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			form: {
-				feedingTime: '2020-04-19',
-				foodType: 'Bread',
-				foodAmount: '10',
-				location: 'The lake',
-				numberOfDucks: 10,
-				repeatFeeding: true,
-			},
+			feedingTime: moment(),
+			foodType: '',
+			foodAmount: '',
+			location: '',
+			numberOfDucks: 0,
+			repeatFeeding: true,
+			loading: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange() {
-		console.log('An input changed...');
+	handleChange(e) {
+		e.preventDefault();
+		const { target } = e;
+		this.setState({
+			[target.name]: e.value,
+		});
 	}
 	async handleSubmit(e) {
 		e.preventDefault();
-		console.log('Form Submission');
 		const { form } = this.state;
-		console.log(form);
+
 		const headers = new Headers();
-		headers.append('Content-Tye', 'application/json');
+		headers.append('Content-Type', 'application/json');
+
 		const options = {
 			method: 'POST',
 			headers,
 			body: JSON.stringify(form),
 		};
+
 		const saveData = new Request('http://localhost:8080/feeding', options);
 		try {
 			const response = await fetch(saveData);
-			console.log(response);
-		} catch (error) {
-			console.log(error);
-		}
+			if (response.status === 400) {
+				console.log('Oops');
+			}
+		} catch (error) {}
 	}
 
 	render() {
@@ -59,22 +65,30 @@ export default class DuckForm extends React.Component {
 			location,
 			numberOfDucks,
 			repeatFeeding,
-		} = this.state.form;
+			loading,
+		} = this.state;
 		return (
 			<div>
 				<form className={'form'} onSubmit={this.handleSubmit}>
 					<FormControl>
-						{/* <DateTimePicker
+						<DateTimePicker
+							name={'feedingTime'}
 							value={feedingTime}
 							disablePast
 							onChange={this.handleChange}
-							label='With Today Button'
+							label='When did you feed the ducks'
 							showTodayButton
-						/> */}
+						/>
 					</FormControl>
 					<FormControl>
 						<InputLabel htmlFor='my-input'>Type of food</InputLabel>
-						<Input id='my-input' aria-describedby='my-helper-text' />
+						<Input
+							id='my-input'
+							aria-describedby='my-helper-text'
+							value={foodType}
+							name={'foodType'}
+							onChange={this.handleChange}
+						/>
 					</FormControl>
 					<FormControl>
 						<InputLabel htmlFor='my-input'>Amount of food</InputLabel>
@@ -82,13 +96,22 @@ export default class DuckForm extends React.Component {
 							id='my-input'
 							aria-describedby='my-helper-text'
 							type='number'
+							value={foodAmount}
+							name={'foodAmount'}
+							onChange={this.handleChange}
 						/>
 					</FormControl>
 					<FormControl>
 						<InputLabel htmlFor='my-input'>
 							Where did you feed the ducks
 						</InputLabel>
-						<Input id='my-input' aria-describedby='my-helper-text' />
+						<Input
+							id='my-input'
+							aria-describedby='my-helper-text'
+							value={location}
+							name={'location'}
+							onChange={this.handleChange}
+						/>
 					</FormControl>
 					<FormControl>
 						<InputLabel htmlFor='my-input'>
@@ -98,6 +121,9 @@ export default class DuckForm extends React.Component {
 							id='my-input'
 							aria-describedby='my-helper-text'
 							type='number'
+							value={numberOfDucks}
+							name={'numberOfDucks'}
+							onChange={this.handleChange}
 						/>
 					</FormControl>
 					<FormControl>
@@ -109,7 +135,12 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 
-					<Button variant='contained' color='primary' type='submit'>
+					<Button
+						variant='contained'
+						color='primary'
+						type='submit'
+						disabled={loading}
+					>
 						Feed the ducks
 					</Button>
 				</form>
