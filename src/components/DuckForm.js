@@ -1,6 +1,7 @@
 import React from 'react';
 import {
 	Button,
+	Checkbox,
 	FormControl,
 	InputLabel,
 	FormHelperText,
@@ -8,24 +9,91 @@ import {
 } from '@material-ui/core';
 
 export default class DuckForm extends React.Component {
-	render() {
-		return (
-			<div className='App'>
-				<header className='App-header'>
-					{/* <img src={logo} className='App-logo' alt='logo' /> */}
-					<p>Feed those ducks.</p>
-					<form>
-						<FormControl>
-							<InputLabel htmlFor='my-input'>Email address</InputLabel>
-							<Input id='my-input' aria-describedby='my-helper-text' />
-							<FormHelperText id='my-helper-text'>
-								We'll never share your email.
-							</FormHelperText>
-						</FormControl>
+	constructor() {
+		super();
+		this.state = {
+			feedingTime: '',
+			foodType: '',
+			foodAmount: '',
+			location: '',
+			numberOfDucks: '',
+			repeatFeeding: '',
+		};
+		console.log(new Date());
+	}
+	handleChange() {
+		console.log('An input changed...');
+	}
+	handleSubmit() {
+		console.log('Handle Submission');
+	}
 
-						<Button>I've fed the ducks</Button>
-					</form>
-				</header>
+	render() {
+		const {
+			feedingTime,
+			foodType,
+			foodAmount,
+			location,
+			numberOfDucks,
+			repeatFeeding,
+		} = this.state;
+		return (
+			<div>
+				<form onSubmit={this.handleSubmit}>
+					<FormControl>
+						<InputLabel htmlFor='datetime-local'>Feeding time</InputLabel>
+						<DateTimePicker
+							value={feedingTime}
+							disablePast
+							onChange={this.handleChange}
+							label='With Today Button'
+							showTodayButton
+						/>
+					</FormControl>
+					<FormControl>
+						<InputLabel htmlFor='my-input'>Type of food</InputLabel>
+						<Input id='my-input' aria-describedby='my-helper-text' />
+						<FormHelperText id='my-helper-text'>
+							We'll never share your email.
+						</FormHelperText>
+					</FormControl>
+					<FormControl>
+						<InputLabel htmlFor='my-input'>Amount of food</InputLabel>
+						<Input id='my-input' aria-describedby='my-helper-text' />
+						<FormHelperText id='my-helper-text'>
+							We'll never share your email.
+						</FormHelperText>
+					</FormControl>
+					<FormControl>
+						<InputLabel htmlFor='my-input'>
+							Where did you feed the ducks
+						</InputLabel>
+						<Input id='my-input' aria-describedby='my-helper-text' />
+						<FormHelperText id='my-helper-text'>
+							We'll never share your email.
+						</FormHelperText>
+					</FormControl>
+					<FormControl>
+						<InputLabel htmlFor='my-input'>
+							How many ducks did you feed
+						</InputLabel>
+						<Input id='my-input' aria-describedby='my-helper-text' />
+						<FormHelperText id='my-helper-text'>
+							We'll never share your email.
+						</FormHelperText>
+					</FormControl>
+					<FormControl>
+						<Checkbox
+							color='primary'
+							value='checkedA'
+							inputProps={{ 'aria-label': 'Checkbox A' }}
+						/>
+					</FormControl>
+
+					<Button variant='contained' color='primary'>
+						Feed the ducks
+					</Button>
+				</form>
 			</div>
 		);
 	}
