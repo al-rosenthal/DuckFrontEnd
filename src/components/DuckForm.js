@@ -26,26 +26,53 @@ export default class DuckForm extends React.Component {
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.handleDatePicker = this.handleDatePicker.bind(this);
+		this.toggleLoading = this.toggleLoading.bind(this);
 	}
 
 	handleChange(e) {
 		e.preventDefault();
 		const { target } = e;
 		this.setState({
-			[target.name]: e.value,
+			[target.name]: target.value,
 		});
 	}
+	handleDatePicker(date) {
+		this.setState({
+			feedingTime: date,
+		});
+	}
+	toggleLoading() {
+		this.setState({
+			loading: !this.state.loading,
+		});
+	}
+
 	async handleSubmit(e) {
 		e.preventDefault();
-		const { form } = this.state;
-
+		const {
+			feedingTime,
+			foodType,
+			foodAmount,
+			location,
+			numberOfDucks,
+			repeatFeeding,
+		} = this.state;
+		this.toggleLoading();
+		const formValues = {
+			feedingTime: moment(feedingTime).format('YYYY-MM-DD HH:mm'),
+			foodType,
+			foodAmount,
+			location,
+			numberOfDucks,
+			repeatFeeding,
+		};
 		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-
 		const options = {
 			method: 'POST',
 			headers,
-			body: JSON.stringify(form),
+			body: JSON.stringify(formValues),
 		};
 
 		const saveData = new Request('http://localhost:8080/feeding', options);
@@ -53,8 +80,12 @@ export default class DuckForm extends React.Component {
 			const response = await fetch(saveData);
 			if (response.status === 400) {
 				console.log('Oops');
+				// display error
 			}
-		} catch (error) {}
+			this.toggleLoading();
+		} catch (error) {
+			// display error
+		}
 	}
 
 	render() {
@@ -75,7 +106,7 @@ export default class DuckForm extends React.Component {
 							name={'feedingTime'}
 							value={feedingTime}
 							disablePast
-							onChange={this.handleChange}
+							onChange={this.handleDatePicker}
 							label='When did you feed the ducks'
 							showTodayButton
 						/>
