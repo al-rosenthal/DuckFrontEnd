@@ -1,16 +1,20 @@
 import React from 'react';
 import DuckForm from './components/DuckForm';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import './App.css';
 
 class App extends React.Component {
 	render() {
 		return (
-			<div className='App'>
-				<header className='App-header'>
-					<p>Feed those ducks.</p>
-				</header>
-				<div></div>
-			</div>
+			<MuiPickersUtilsProvider utils={DateFnsUtils}>
+				<div className='App'>
+					<header className='App-header'>
+						<p>Feed those ducks.</p>
+						<DuckForm />
+					</header>
+				</div>
+			</MuiPickersUtilsProvider>
 		);
 	}
 }
