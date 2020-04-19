@@ -50,29 +50,15 @@ export default class DuckForm extends React.Component {
 
 	async handleSubmit(e) {
 		e.preventDefault();
-		const {
-			feedingTime,
-			foodType,
-			foodAmount,
-			location,
-			numberOfDucks,
-			repeatFeeding,
-		} = this.state;
+
 		this.toggleLoading();
-		const formValues = {
-			feedingTime: moment(feedingTime).format('YYYY-MM-DD HH:mm'),
-			foodType,
-			foodAmount,
-			location,
-			numberOfDucks,
-			repeatFeeding,
-		};
+
 		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		const options = {
 			method: 'POST',
 			headers,
-			body: JSON.stringify(formValues),
+			body: JSON.stringify(this.state),
 		};
 
 		const saveData = new Request('http://localhost:8080/feeding', options);
