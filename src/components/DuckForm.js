@@ -93,7 +93,7 @@ export default class DuckForm extends React.Component {
 			body: JSON.stringify(this.state),
 		};
 
-		const saveData = new Request('http://localhost:8080/feeding', options);
+		const saveData = new Request(`${process.env.API_URL}/feeding`, options);
 		try {
 			const response = await fetch(saveData);
 			if (response.status === 400) {
