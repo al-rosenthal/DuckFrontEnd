@@ -18,6 +18,7 @@ export default class DuckForm extends React.Component {
 		super();
 		this.state = {
 			feedingTime: moment(),
+			food: '',
 			foodType: '',
 			foodAmount: '',
 			location: '',
@@ -120,6 +121,7 @@ export default class DuckForm extends React.Component {
 	render() {
 		const {
 			feedingTime,
+			food,
 			foodType,
 			foodAmount,
 			location,
@@ -151,7 +153,17 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 					<FormControl>
-						<InputLabel htmlFor='food-type'>Type of food</InputLabel>
+						<InputLabel htmlFor='food'>What did you feed them</InputLabel>
+						<Input
+							id='food'
+							value={food}
+							name={'food'}
+							onChange={this.handleChange}
+							required
+						/>
+					</FormControl>
+					<FormControl>
+						<InputLabel htmlFor='food-type'>What kind of food</InputLabel>
 						<Input
 							id='food-type'
 							value={foodType}
@@ -225,7 +237,7 @@ export default class DuckForm extends React.Component {
 
 				<Snackbar
 					anchorOrigin={{
-						vertical: 'bottom',
+						vertical: 'top',
 						horizontal: 'center',
 					}}
 					open={openSnack}
