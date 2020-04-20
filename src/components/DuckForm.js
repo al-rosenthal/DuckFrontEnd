@@ -4,8 +4,10 @@ import {
 	Checkbox,
 	FormControl,
 	InputLabel,
-	FormHelperText,
 	Input,
+	Snackbar,
+	FormLabel,
+	FormControlLabel,
 } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
@@ -20,24 +22,31 @@ export default class DuckForm extends React.Component {
 			foodType: '',
 			foodAmount: '',
 			location: '',
-			numberOfDucks: 0,
-			repeatFeeding: true,
+			numberOfDucks: '',
+			repeatFeeding: false,
 			loading: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-		this.handleDatePicker = this.handleDatePicker.bind(this);
+		this.handleDatePickerChange = this.handleDatePickerChange.bind(this);
 		this.toggleLoading = this.toggleLoading.bind(this);
+		this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this);
 	}
 
 	handleChange(e) {
 		e.preventDefault();
+		console.log(e);
 		const { target } = e;
 		this.setState({
 			[target.name]: target.value,
 		});
 	}
-	handleDatePicker(date) {
+	handleCheckBoxChange() {
+		this.setState({
+			repeatFeeding: !this.state.repeatFeeding,
+		});
+	}
+	handleDatePickerChange(date) {
 		this.setState({
 			feedingTime: date,
 		});
@@ -92,26 +101,24 @@ export default class DuckForm extends React.Component {
 							name={'feedingTime'}
 							value={feedingTime}
 							disablePast
-							onChange={this.handleDatePicker}
-							label='When did you feed the ducks'
+							onChange={this.handleDatePickerChange}
+							label='When did you feed them'
 							showTodayButton
 						/>
 					</FormControl>
 					<FormControl>
-						<InputLabel htmlFor='my-input'>Type of food</InputLabel>
+						<InputLabel htmlFor='food-type'>Type of food</InputLabel>
 						<Input
-							id='my-input'
-							aria-describedby='my-helper-text'
+							id='food-type'
 							value={foodType}
 							name={'foodType'}
 							onChange={this.handleChange}
 						/>
 					</FormControl>
 					<FormControl>
-						<InputLabel htmlFor='my-input'>Amount of food</InputLabel>
+						<InputLabel htmlFor='food-amount'>Amount of food</InputLabel>
 						<Input
-							id='my-input'
-							aria-describedby='my-helper-text'
+							id='food-amount'
 							type='number'
 							value={foodAmount}
 							name={'foodAmount'}
@@ -119,11 +126,11 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 					<FormControl>
-						<InputLabel htmlFor='my-input'>
+						<InputLabel htmlFor='feed-location'>
 							Where did you feed the ducks
 						</InputLabel>
 						<Input
-							id='my-input'
+							id='feed-location'
 							aria-describedby='my-helper-text'
 							value={location}
 							name={'location'}
@@ -131,11 +138,11 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 					<FormControl>
-						<InputLabel htmlFor='my-input'>
+						<InputLabel htmlFor='amount-ducks'>
 							How many ducks did you feed
 						</InputLabel>
 						<Input
-							id='my-input'
+							id='amount-ducks'
 							aria-describedby='my-helper-text'
 							type='number'
 							value={numberOfDucks}
@@ -144,11 +151,16 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 					<FormControl>
-						Do you do this everyday?
-						<Checkbox
-							color='primary'
-							value='checkedA'
-							inputProps={{ 'aria-label': 'Checkbox A' }}
+						<FormControlLabel
+							value='Start'
+							control={
+								<Checkbox
+									color='primary'
+									checked={repeatFeeding}
+									onChange={this.handleCheckBoxChange}
+								/>
+							}
+							label='Do you do this everyday?'
 						/>
 					</FormControl>
 
@@ -158,7 +170,7 @@ export default class DuckForm extends React.Component {
 						type='submit'
 						disabled={loading}
 					>
-						Feed the ducks
+						Submit Data
 					</Button>
 				</form>
 			</div>
