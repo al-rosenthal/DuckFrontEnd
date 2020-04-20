@@ -23,7 +23,7 @@ export default class DuckForm extends React.Component {
 			foodAmount: '',
 			location: '',
 			numberOfDucks: '',
-			repeatFeeding: false,
+			repeatFeeding: true,
 			loading: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -81,6 +81,17 @@ export default class DuckForm extends React.Component {
 		} catch (error) {
 			// display error
 		}
+	}
+
+	renderRepeatFeeding() {
+		return (
+			<div className={'Repeat-Message'}>
+				<p>
+					That's great! With this you won't have to fill in this form daily,
+					we'll take care of that for you.
+				</p>
+			</div>
+		);
 	}
 
 	render() {
@@ -162,7 +173,7 @@ export default class DuckForm extends React.Component {
 							label='Do you do this everyday?'
 						/>
 					</FormControl>
-
+					{repeatFeeding ? this.renderRepeatFeeding() : ''}
 					<div className={'Submit-Button'}>
 						<Button
 							variant='contained'
