@@ -10,7 +10,16 @@ class App extends React.Component {
 			<MuiPickersUtilsProvider utils={MomentUtils}>
 				<div className='App'>
 					<header className='App-header'>
-						<p>Feed those ducks.</p>
+						<h2>
+							Have you fed some ducks today?{' '}
+							<span role='img' aria-label='duck'>
+								🦆
+							</span>
+						</h2>
+						<p>
+							Please fill out this form if you have, it helps with a lot with my
+							research!
+						</p>
 						<DuckForm />
 					</header>
 				</div>
