@@ -3,10 +3,10 @@ import {
 	Button,
 	Checkbox,
 	FormControl,
+	IconButton,
 	InputLabel,
 	Input,
 	Snackbar,
-	FormLabel,
 	FormControlLabel,
 } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
@@ -23,14 +23,18 @@ export default class DuckForm extends React.Component {
 			foodAmount: '',
 			location: '',
 			numberOfDucks: '',
-			repeatFeeding: true,
+			repeatFeeding: false,
 			loading: false,
+			openSnack: false,
+			formSuccess: false,
+			formError: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleDatePickerChange = this.handleDatePickerChange.bind(this);
 		this.toggleLoading = this.toggleLoading.bind(this);
 		this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this);
+		this.handleCloseSnackBar = this.handleCloseSnackBar.bind(this);
 	}
 
 	handleChange(e) {
@@ -49,6 +53,26 @@ export default class DuckForm extends React.Component {
 	handleDatePickerChange(date) {
 		this.setState({
 			feedingTime: date,
+		});
+	}
+	handleCloseSnackBar() {
+		this.setState({
+			openSnack: false,
+			formSuccess: false,
+			formError: false,
+		});
+	}
+	formSuccess() {
+		this.setState({
+			openSnack: true,
+			formSuccess: true,
+		});
+	}
+
+	formFailure() {
+		this.setState({
+			openSnack: true,
+			formError: true,
 		});
 	}
 	toggleLoading() {
@@ -75,11 +99,13 @@ export default class DuckForm extends React.Component {
 			const response = await fetch(saveData);
 			if (response.status === 400) {
 				console.log('Oops');
-				// display error
+				this.formFailure();
+			} else {
+				this.formSuccess();
 			}
 			this.toggleLoading();
 		} catch (error) {
-			// display error
+			this.formFailure();
 		}
 	}
 
@@ -103,7 +129,17 @@ export default class DuckForm extends React.Component {
 			numberOfDucks,
 			repeatFeeding,
 			loading,
+			openSnack,
+			formSuccess,
+			formError,
 		} = this.state;
+		let snackMessage = '';
+		if (formSuccess) {
+			snackMessage = 'Success!';
+		}
+		if (formError) {
+			snackMessage = 'Uh oh, refresh the page and try again';
+		}
 		return (
 			<div>
 				<form className={'Form'} onSubmit={this.handleSubmit}>
@@ -185,6 +221,28 @@ export default class DuckForm extends React.Component {
 						</Button>
 					</div>
 				</form>
+
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'center',
+					}}
+					open={openSnack}
+					autoHideDuration={6000}
+					onClose={this.handleCloseSnackBar}
+					message={snackMessage}
+					action={
+						<React.Fragment>
+							<Button
+								color='secondary'
+								size='small'
+								onClick={this.handleCloseSnackBar}
+							>
+								X
+							</Button>
+						</React.Fragment>
+					}
+				/>
 			</div>
 		);
 	}
