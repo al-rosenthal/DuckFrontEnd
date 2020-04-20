@@ -3,7 +3,6 @@ import {
 	Button,
 	Checkbox,
 	FormControl,
-	IconButton,
 	InputLabel,
 	Input,
 	Snackbar,
@@ -39,7 +38,6 @@ export default class DuckForm extends React.Component {
 
 	handleChange(e) {
 		e.preventDefault();
-		console.log(e);
 		const { target } = e;
 		this.setState({
 			[target.name]: target.value,
@@ -98,7 +96,6 @@ export default class DuckForm extends React.Component {
 		try {
 			const response = await fetch(saveData);
 			if (response.status === 400) {
-				console.log('Oops');
 				this.formFailure();
 			} else {
 				this.formSuccess();
@@ -160,6 +157,7 @@ export default class DuckForm extends React.Component {
 							value={foodType}
 							name={'foodType'}
 							onChange={this.handleChange}
+							required
 						/>
 					</FormControl>
 					<FormControl>
@@ -169,6 +167,7 @@ export default class DuckForm extends React.Component {
 							value={foodAmount}
 							name={'foodAmount'}
 							onChange={this.handleChange}
+							required
 						/>
 					</FormControl>
 					<FormControl>
@@ -181,6 +180,7 @@ export default class DuckForm extends React.Component {
 							value={location}
 							name={'location'}
 							onChange={this.handleChange}
+							required
 						/>
 					</FormControl>
 					<FormControl>
@@ -194,6 +194,7 @@ export default class DuckForm extends React.Component {
 							value={numberOfDucks}
 							name={'numberOfDucks'}
 							onChange={this.handleChange}
+							required
 						/>
 					</FormControl>
 					<FormControl>
