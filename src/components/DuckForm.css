@@ -1,4 +1,10 @@
-.form {
+.Form {
 	display: flex;
 	flex-direction: column;
+	min-width: 300px;
+}
+
+.Submit-Button {
+	margin-top: 1em;
+	width: 100%;
 }

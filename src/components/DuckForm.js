@@ -95,7 +95,7 @@ export default class DuckForm extends React.Component {
 		} = this.state;
 		return (
 			<div>
-				<form className={'form'} onSubmit={this.handleSubmit}>
+				<form className={'Form'} onSubmit={this.handleSubmit}>
 					<FormControl>
 						<DateTimePicker
 							name={'feedingTime'}
@@ -119,7 +119,6 @@ export default class DuckForm extends React.Component {
 						<InputLabel htmlFor='food-amount'>Amount of food</InputLabel>
 						<Input
 							id='food-amount'
-							type='number'
 							value={foodAmount}
 							name={'foodAmount'}
 							onChange={this.handleChange}
@@ -164,14 +163,16 @@ export default class DuckForm extends React.Component {
 						/>
 					</FormControl>
 
-					<Button
-						variant='contained'
-						color='primary'
-						type='submit'
-						disabled={loading}
-					>
-						Submit Data
-					</Button>
+					<div className={'Submit-Button'}>
+						<Button
+							variant='contained'
+							color='primary'
+							type='submit'
+							disabled={loading}
+						>
+							Submit Data
+						</Button>
+					</div>
 				</form>
 			</div>
 		);
