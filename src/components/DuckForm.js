@@ -62,7 +62,14 @@ export default class DuckForm extends React.Component {
 		});
 	}
 	formSuccess() {
+		// reset the form after submission
 		this.setState({
+			feedingTime: moment(),
+			food: '',
+			foodType: '',
+			foodAmount: '',
+			location: '',
+			numberOfDucks: '',
 			openSnack: true,
 			formSuccess: true,
 		});
@@ -93,7 +100,10 @@ export default class DuckForm extends React.Component {
 			body: JSON.stringify(this.state),
 		};
 
-		const saveData = new Request(`${process.env.API_URL}/feeding`, options);
+		const saveData = new Request(
+			`${process.env.REACT_APP_API_URL}/feeding`,
+			options
+		);
 		try {
 			const response = await fetch(saveData);
 			if (response.status === 400) {
